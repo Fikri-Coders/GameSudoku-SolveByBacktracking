@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <!-- JavaScript File that contains required font from Google CDN -->
+    <!-- File JavaScript yang memuat font yang diperlukan dari Google CDN -->
     <script src="font.js"></script>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <title>BackTracking Algo. Visualizer</title>
+    <title>Visualisasi Algoritma BackTracking</title>
   </head>
 
-  <!-- Generate Puzzle Function is called after the page is completely loaded -->
+  <!-- Fungsi generatePuzzle dipanggil setelah halaman sepenuhnya dimuat -->
 
-  <body onload="generatePuzzle()">
-    <!-- NavBar containing controls -->
+  <body onload="buatPuzzle()">
+    <!-- NavBar yang berisi kontrol -->
 
     <nav id="navbar">
-      <h1 class="logo">BackTracking Algorithm Visualizer</h1>
+      <h1 class="logo">Visualisasi Algoritma BackTracking</h1>
       <ul>
-        <li id="clearBtn">Clear Puzzle</li>
-        <li id="generateBtn">Generate Puzzle</li>
+        <li id="clearBtn">Hapus Puzzle</li>
+        <li id="generateBtn">Buat Puzzle</li>
         <li>
           <input type="checkbox" name="" id="speed" />
-          <label for="speed">Speed<i class="fas fa-angle-down"></i></label>
+          <label for="speed">Kecepatan<i class="fas fa-angle-down"></i></label>
           <ul>
-            <li data-value="Fast" class="active">Fast</li>
-            <li data-value="Average">Average</li>
-            <li data-value="Slow">Slow</li>
+            <li data-value="Fast" class="active">Cepat</li>
+            <li data-value="Average">Sedang</li>
+            <li data-value="Slow">Lambat</li>
           </ul>
         </li>
-        <li id="visualizeBtn">VISUALIZE</li>
+        <li id="visualizeBtn">VISUALISASI</li>
       </ul>
     </nav>
     <br /><br /><br />
 
-    <!-- Hidden Container to show alerts -->
+    <!-- Container tersembunyi untuk menampilkan peringatan -->
 
     <div class="alert hidden"></div>
 
-    <!-- Hidden Audio element to play music while animating -->
+    <!-- Elemen audio tersembunyi untuk memutar musik saat animasi -->
 
     <audio src="music/summer.mp3" class="hidden" id="audio"></audio>
 
-    <!-- Container that holds Sudoku Grid (9X9) -->
+    <!-- Container yang menyimpan Grid Sudoku (9X9) -->
 
     <table class="grid-container">
       <tbody>
@@ -148,16 +148,16 @@
       </tbody>
     </table>
 
-    <!-- Footer that displays text -->
+    <!-- Footer yang menampilkan teks -->
 
     <div class="footer">
       <p>
-        Please note that the time taken for solving the Puzzle is minimal, it is
-        the Graphical Visualization to understand the Algorithm that takes time.
+        Perlu diketahui bahwa waktu yang dibutuhkan untuk menyelesaikan Puzzle sangat minimal, 
+        visualisasi grafis untuk memahami algoritma yang membutuhkan waktu.
       </p>
     </div>
 
-    <!-- JavaScript File that contains the application logic -->
+    <!-- File JavaScript yang berisi logika aplikasi -->
 
     <script src="main.js"></script>
   </body>

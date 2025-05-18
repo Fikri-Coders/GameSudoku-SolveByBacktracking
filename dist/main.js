@@ -1,149 +1,149 @@
-// JavaScript File that contains the main application logic
+// File JavaScript yang berisi logika aplikasi utama
 
-var grid;
-var speed;
-var speedInt;
-var solution = null;
-var inProgress = false;
+var papan;
+var kecepatan;
+var kecepatanInt;
+var solusi = null;
+var sedangProses = false;
 
-// Get the audio element and set the default volume level to 35%
+// Mengambil elemen audio dan mengatur level volume default menjadi 35%
 const audio = document.getElementById("audio");
 audio.volume = 0.35;
 
-// Creating songs array with one song element to play for the viewer when visualizing the algorithm
-const songs = ["summer"];
+// Membuat array lagu dengan satu elemen lagu untuk diputar untuk penonton saat memvisualisasikan algoritma
+const lagu = ["summer"];
 
-// Initially load song details into DOM
-loadSong(songs[0]);
+// Awalnya memuat detail lagu ke DOM
+muatLagu(lagu[0]);
 
-// Load Song
-function loadSong(song) {
-  audio.src = `music/${song}.mp3`;
+// Memuat Lagu
+function muatLagu(lagu) {
+  audio.src = `music/${lagu}.mp3`;
 }
 
-// Play song
-function playSong() {
+// Putar lagu
+function putarLagu() {
   audio.play();
 }
 
-// Function to get the current Grid Details
-const fetchCurrentGrid = () => {
-  let grid = [];
-  for (let row = 0; row < 9; row++) {
-    let currentRow = [];
-    let rowElement = document.querySelector(`.row:nth-child(${row + 1})`);
-    for (col = 0; col < rowElement.children.length; col++) {
-      currentRow.push(rowElement.children[col]);
+// Fungsi untuk mendapatkan Detail Papan Saat Ini
+const ambilPapanSaatIni = () => {
+  let papan = [];
+  for (let baris = 0; baris < 9; baris++) {
+    let barisSaatIni = [];
+    let elemenBaris = document.querySelector(`.row:nth-child(${baris + 1})`);
+    for (kolom = 0; kolom < elemenBaris.children.length; kolom++) {
+      barisSaatIni.push(elemenBaris.children[kolom]);
     }
-    grid.push(currentRow);
+    papan.push(barisSaatIni);
   }
-  return grid;
+  return papan;
 };
 
-grid = fetchCurrentGrid();
-speed = "Fast";
-speedInt = 3;
+papan = ambilPapanSaatIni();
+kecepatan = "Fast";
+kecepatanInt = 3;
 
-// Function to clear all the values from the Grid
-const clearGrid = () => {
-  if (inProgress) {
-    showAlert(
-      "Animation in Progress..  Please Reload the Page to solve another puzzle before animation gets completed.",
+// Fungsi untuk menghapus semua nilai dari Papan
+const hapusPapan = () => {
+  if (sedangProses) {
+    tampilkanPeringatan(
+      "Animasi Sedang Berlangsung.. Silakan Muat Ulang Halaman untuk menyelesaikan puzzle lain sebelum animasi selesai.",
       "danger"
     );
     return;
   }
-  grid.forEach((row) =>
-    row.forEach((td) => {
+  papan.forEach((baris) =>
+    baris.forEach((td) => {
       td.className = "";
       td.children[0].value = "";
     })
   );
-  solution = null;
+  solusi = null;
 };
 
-// Setting the OnClick Event Listener for Clear Grid Button
-const clearGridBtn = document.getElementById("clearBtn");
-clearGridBtn.addEventListener("click", clearGrid);
+// Mengatur Pendengar Acara OnClick untuk Tombol Hapus Papan
+const tombolHapusPapan = document.getElementById("clearBtn");
+tombolHapusPapan.addEventListener("click", hapusPapan);
 
-// Function to Generate Puzzle
-const generatePuzzle = () => {
-  if (inProgress) {
-    showAlert(
-      "Animation in Progress..  Please Reload the Page to solve another puzzle before animation gets completed.",
+// Fungsi untuk Membuat Puzzle
+const buatPuzzle = () => {
+  if (sedangProses) {
+    tampilkanPeringatan(
+      "Animasi Sedang Berlangsung.. Silakan Muat Ulang Halaman untuk menyelesaikan puzzle lain sebelum animasi selesai.",
       "danger"
     );
     return;
   } else {
-    clearGrid();
-    fillDiagonalSectionsRandomly();
-    backtracking(grid, 0, true);
-    solution = grid.map((row) =>
-      row.map((td) => {
+    hapusPapan();
+    isiSeksiDiagonalSecara();
+    backtracking(papan, 0, true);
+    solusi = papan.map((baris) =>
+      baris.map((td) => {
         return td.children[0].value;
       })
     );
-    // Randomly Delete Cells after solving puzzle to generate puzzle
-    deleteRandomely();
-    fixClasses();
+    // Secara Acak Menghapus Sel setelah menyelesaikan puzzle untuk menghasilkan puzzle
+    hapusSecara();
+    aturKelas();
   }
 };
 
-// Setting OnClick Event Listener for Generate Puzzle Button
-const generateBtn = document.getElementById("generateBtn");
-generateBtn.addEventListener("click", generatePuzzle);
+// Mengatur Pendengar Acara OnClick untuk Tombol Buat Puzzle
+const tombolBuat = document.getElementById("generateBtn");
+tombolBuat.addEventListener("click", buatPuzzle);
 
-const fillDiagonalSectionsRandomly = () => {
-  let row = 0;
-  let col = 0;
-  let counter = 0;
+const isiSeksiDiagonalSecara = () => {
+  let baris = 0;
+  let kolom = 0;
+  let penghitung = 0;
 
-  while (row != 9 && col != 9 && counter < 900) {
-    counter++;
-    let possibleNum = Math.floor(Math.random() * 9) + 1;
+  while (baris != 9 && kolom != 9 && penghitung < 900) {
+    penghitung++;
+    let angkaMungkin = Math.floor(Math.random() * 9) + 1;
 
-    grid[row][col].children[0].value = possibleNum;
-    grid[row][col].classList.add("fixed");
+    papan[baris][kolom].children[0].value = angkaMungkin;
+    papan[baris][kolom].classList.add("fixed");
 
-    if (row % 3 == 0 && col % 3 == 0) {
-      col++;
-    } else if (isSquareValid(row, col, grid)) {
-      if (col % 3 != 2) {
-        col++;
-      } else if (col % 3 === 2) {
-        if (row % 3 === 2) {
-          col++;
+    if (baris % 3 == 0 && kolom % 3 == 0) {
+      kolom++;
+    } else if (apakahKotakValid(baris, kolom, papan)) {
+      if (kolom % 3 != 2) {
+        kolom++;
+      } else if (kolom % 3 === 2) {
+        if (baris % 3 === 2) {
+          kolom++;
         } else {
-          col = col - 2;
+          kolom = kolom - 2;
         }
 
-        row++;
+        baris++;
       }
     }
   }
 };
 
-const deleteRandomely = () => {
-  let cellsToRemoveFromPuzzle = [];
+const hapusSecara = () => {
+  let selYangDihapusDariPuzzle = [];
   for (let i = 0; i < 80; i++) {
-    let randomCellIdx = Math.floor(Math.random() * 81);
-    cellsToRemoveFromPuzzle.push(randomCellIdx);
+    let indeksSelAcak = Math.floor(Math.random() * 81);
+    selYangDihapusDariPuzzle.push(indeksSelAcak);
   }
 
-  let counter = 0;
-  for (let row = 0; row < grid.length; row++) {
-    for (let col = 0; col < grid[row].length; col++) {
-      if (cellsToRemoveFromPuzzle.indexOf(counter) !== -1) {
-        grid[row][col].children[0].value = "";
+  let penghitung = 0;
+  for (let baris = 0; baris < papan.length; baris++) {
+    for (let kolom = 0; kolom < papan[baris].length; kolom++) {
+      if (selYangDihapusDariPuzzle.indexOf(penghitung) !== -1) {
+        papan[baris][kolom].children[0].value = "";
       }
-      counter++;
+      penghitung++;
     }
   }
 };
 
-const fixClasses = () => {
-  grid.forEach((row) =>
-    row.forEach((td) => {
+const aturKelas = () => {
+  papan.forEach((baris) =>
+    baris.forEach((td) => {
       if (td.children[0].value) {
         td.className = "fixed";
       } else {
@@ -153,13 +153,13 @@ const fixClasses = () => {
   );
 };
 
-// Function to disable the DOMRectdown menus while animating
-const menus = document.querySelectorAll(`nav li input[type='checkbox']`);
+// Fungsi untuk menonaktifkan menu dropdown saat menganimasikan
+const menu = document.querySelectorAll(`nav li input[type='checkbox']`);
 
-menus.forEach((menu) => {
+menu.forEach((menu) => {
   menu.addEventListener("click", (e) => {
     if (e.target.checked) {
-      menus.forEach((menu) => {
+      menu.forEach((menu) => {
         if (menu !== e.target) {
           menu.checked = false;
         }
@@ -168,9 +168,9 @@ menus.forEach((menu) => {
   });
 });
 
-// Handle the entered numbers into the grid
-grid.forEach((row, rowIdx) =>
-  row.forEach((td, colIdx) => {
+// Menangani angka yang dimasukkan ke dalam papan
+papan.forEach((baris, indeksBaris) =>
+  baris.forEach((td, indeksKolom) => {
     td.children[0].addEventListener("input", (e) => {
       if (e.target.value == "") {
         td.className = "";
@@ -188,15 +188,15 @@ grid.forEach((row, rowIdx) =>
           td.classList.remove("wrong");
         }, 500);
       } else {
-        if (solution) {
-          if (td.children[0].value == solution[rowIdx][colIdx]) {
+        if (solusi) {
+          if (td.children[0].value == solusi[indeksBaris][indeksKolom]) {
             td.classList.add("correct");
           } else {
             td.classList.add("wrong");
           }
         } else {
           td.classList.add("fixed");
-          if (isCellValid(rowIdx, colIdx, grid)) return;
+          if (apakahSelValid(indeksBaris, indeksKolom, papan)) return;
           td.classList.remove("fixed");
           td.classList.add("wrong");
           setTimeout(() => {
@@ -209,47 +209,47 @@ grid.forEach((row, rowIdx) =>
   })
 );
 
-// Add Event isteners to adjust the speed of the animation
-const speedBtns = document.querySelectorAll(`#speed ~ ul > li`);
+// Menambahkan Pendengar Acara untuk menyesuaikan kecepatan animasi
+const tombolKecepatan = document.querySelectorAll(`#speed ~ ul > li`);
 
-speedBtns.forEach((btn) => {
+tombolKecepatan.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    speed = e.target.getAttribute("data-value");
+    kecepatan = e.target.getAttribute("data-value");
 
-    // for UI
-    speedBtns.forEach((option) => option.classList.remove("active"));
+    // untuk UI
+    tombolKecepatan.forEach((option) => option.classList.remove("active"));
     e.target.classList.add("active");
 
-    switch (speed) {
+    switch (kecepatan) {
       case "Fast":
-        speedInt = 3;
+        kecepatanInt = 3;
         break;
       case "Average":
-        speedInt = 10;
+        kecepatanInt = 10;
         break;
       case "Slow":
-        speedInt = 150;
+        kecepatanInt = 150;
         break;
     }
     document.getElementById("speed").checked = false;
   });
 });
 
-// Setting the Event Listener for VISUALIZE Button
-const visualizeBtn = document.getElementById("visualizeBtn");
+// Mengatur Pendengar Acara untuk Tombol VISUALISASI
+const tombolVisualisasi = document.getElementById("visualizeBtn");
 
-visualizeBtn.addEventListener("click", () => {
-  if (inProgress) {
-    showAlert(
-      "Animation in Progress..  Please Wait till the animation completes..",
+tombolVisualisasi.addEventListener("click", () => {
+  if (sedangProses) {
+    tampilkanPeringatan(
+      "Animasi Sedang Berlangsung.. Silakan Tunggu sampai animasi selesai..",
       "danger"
     );
     return;
   }
 
-  //Clear the grid of previous solutions.
-  grid.forEach((row) =>
-    row.forEach((td) => {
+  // Bersihkan papan dari solusi sebelumnya.
+  papan.forEach((baris) =>
+    baris.forEach((td) => {
       if (!td.classList.contains("fixed")) {
         td.children[0].value = "";
         td.className = "";
@@ -257,120 +257,120 @@ visualizeBtn.addEventListener("click", () => {
     })
   );
 
-  //Disabling the Dropdowns
-  let menues = document.querySelectorAll(`ul input[type='checkbox']`);
-  menues.forEach((checkbox) => {
+  // Menonaktifkan Dropdown
+  let menus = document.querySelectorAll(`ul input[type='checkbox']`);
+  menus.forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.disabled = true;
   });
 
-  inProgress = true;
-  playSong();
-  return backtracking(grid, speedInt);
+  sedangProses = true;
+  putarLagu();
+  return backtracking(papan, kecepatanInt);
 });
 ``;
 
-// BackTracking Algorithm to solve the puzzle
+// Algoritma BackTracking untuk menyelesaikan puzzle
 
 const backtracking = (
-  grid,
-  speedInt,
-  comingFromGenerator = false,
-  row = 0,
-  col = 0,
-  counter = null,
-  animationList = null
+  papan,
+  kecepatanInt,
+  datangDariGenerator = false,
+  baris = 0,
+  kolom = 0,
+  penghitung = null,
+  daftarAnimasi = null
 ) => {
-  if (!animationList) animationList = [];
+  if (!daftarAnimasi) daftarAnimasi = [];
 
-  if (!counter) counter = { iteration: 0, startTime: Date.now() };
+  if (!penghitung) penghitung = { iterasi: 0, waktuMulai: Date.now() };
 
-  counter["iteration"]++;
+  penghitung["iterasi"]++;
 
-  // Break and throw alert to the user if algorithm takes too much time or steps to solve the current puzzle
+  // Berhenti dan lempar peringatan ke pengguna jika algoritma membutuhkan terlalu banyak waktu atau langkah untuk menyelesaikan puzzle saat ini
 
-  if (counter["iteration"] >= 100000) {
-    showAlert(
-      "Backtracking is a naive algorithm.Please try an easier puzzle for it.",
+  if (penghitung["iterasi"] >= 100000) {
+    tampilkanPeringatan(
+      "Backtracking adalah algoritma yang naif. Silakan coba puzzle yang lebih mudah untuk itu.",
       "danger"
     );
     return false;
   }
 
-  if (row === grid.length && col === grid[row].length) {
-    clearGrid();
-    animate(animationList, speedInt);
+  if (baris === papan.length && kolom === papan[baris].length) {
+    hapusPapan();
+    animasi(daftarAnimasi, kecepatanInt);
     return true;
   }
 
-  let nextEmpty = findNextEmpty(grid, row, col);
+  let selanjutnyaKosong = cariSelanjutnyaKosong(papan, baris, kolom);
 
-  if (!nextEmpty) {
-    if (!comingFromGenerator) {
-      grid.forEach((row) =>
-        row.forEach((td) => {
+  if (!selanjutnyaKosong) {
+    if (!datangDariGenerator) {
+      papan.forEach((baris) =>
+        baris.forEach((td) => {
           if (!td.classList.contains("fixed")) {
             td.children[0].value = "";
           }
         })
       );
 
-      animate(animationList, speedInt);
+      animasi(daftarAnimasi, kecepatanInt);
 
-      let duration = Date.now() - counter["startTime"];
-      showAlert(
-        `Backtracking Algorithm solved the puzzle successfully in ${duration} ms.`,
+      let durasi = Date.now() - penghitung["waktuMulai"];
+      tampilkanPeringatan(
+        `Algoritma Backtracking menyelesaikan puzzle dengan sukses dalam ${durasi} ms.`,
         "success"
       );
     }
 
-    enableMenu(animationList.length);
+    aktifkanMenu(daftarAnimasi.length);
 
     return true;
   }
 
-  let [nextRow, nextCol] = nextEmpty;
+  let [barisSel, kolomSel] = selanjutnyaKosong;
 
-  for (let possibleNum = 1; possibleNum <= 9; possibleNum++) {
-    grid[nextRow][nextCol].children[0].value = possibleNum;
-    animationList.push([nextRow, nextCol, possibleNum, "wrong"]);
+  for (let angkaMungkin = 1; angkaMungkin <= 9; angkaMungkin++) {
+    papan[barisSel][kolomSel].children[0].value = angkaMungkin;
+    daftarAnimasi.push([barisSel, kolomSel, angkaMungkin, "wrong"]);
 
-    if (isCellValid(nextRow, nextCol, grid)) {
-      animationList.push([nextRow, nextCol, possibleNum, "correct"]);
+    if (apakahSelValid(barisSel, kolomSel, papan)) {
+      daftarAnimasi.push([barisSel, kolomSel, angkaMungkin, "correct"]);
       if (
         backtracking(
-          grid,
-          speedInt,
-          comingFromGenerator,
-          nextRow,
-          nextCol,
-          counter,
-          animationList
+          papan,
+          kecepatanInt,
+          datangDariGenerator,
+          barisSel,
+          kolomSel,
+          penghitung,
+          daftarAnimasi
         )
       )
         return true;
     }
   }
 
-  grid[nextRow][nextCol].children[0].value = "";
-  animationList.push([nextRow, nextCol, "", ""]);
+  papan[barisSel][kolomSel].children[0].value = "";
+  daftarAnimasi.push([barisSel, kolomSel, "", ""]);
   return false;
 };
 
-// Helper Functions to help solve the Puzzle using the BackTracking Algorithm
-const isRowValid = (grid, rowIdx) => {
-  for (let row = 0; row < 9; row++) {
-    if (rowIdx === row) {
-      let numsInRow = {};
+// Fungsi Pembantu untuk membantu menyelesaikan Puzzle menggunakan Algoritma BackTracking
+const apakahBarisValid = (papan, indeksBaris) => {
+  for (let baris = 0; baris < 9; baris++) {
+    if (indeksBaris === baris) {
+      let angkaDalamBaris = {};
 
-      for (col = 0; col < 9; col++) {
+      for (kolom = 0; kolom < 9; kolom++) {
         if (
-          grid[rowIdx][col].children[0].value &&
-          numsInRow[grid[rowIdx][col].children[0].value]
+          papan[indeksBaris][kolom].children[0].value &&
+          angkaDalamBaris[papan[indeksBaris][kolom].children[0].value]
         ) {
           return false;
-        } else if (grid[rowIdx][col].children[0].value) {
-          numsInRow[grid[rowIdx][col].children[0].value] = true;
+        } else if (papan[indeksBaris][kolom].children[0].value) {
+          angkaDalamBaris[papan[indeksBaris][kolom].children[0].value] = true;
         }
       }
 
@@ -379,18 +379,18 @@ const isRowValid = (grid, rowIdx) => {
   }
 };
 
-const isColValid = (grid, colIdx) => {
-  let numsInCol = {};
+const apakahKolomValid = (papan, indeksKolom) => {
+  let angkaDalamKolom = {};
 
-  for (let row = 0; row < grid.length; row++) {
-    for (col = 0; col < grid[row].length; col++) {
-      if (colIdx === col) {
-        currentNum = grid[row][col].children[0].value;
+  for (let baris = 0; baris < papan.length; baris++) {
+    for (kolom = 0; kolom < papan[baris].length; kolom++) {
+      if (indeksKolom === kolom) {
+        currentNum = papan[baris][kolom].children[0].value;
 
-        if (currentNum && numsInCol[currentNum]) {
+        if (currentNum && angkaDalamKolom[currentNum]) {
           return false;
         } else if (currentNum) {
-          numsInCol[currentNum] = true;
+          angkaDalamKolom[currentNum] = true;
         }
       }
     }
@@ -399,20 +399,20 @@ const isColValid = (grid, colIdx) => {
   return true;
 };
 
-const isSquareValid = (rowIdx, colIdx, matrix) => {
-  let xSquare = Math.floor(colIdx / 3);
-  let ySquare = Math.floor(rowIdx / 3);
+const apakahKotakValid = (indeksBaris, indeksKolom, matriks) => {
+  let xKotak = Math.floor(indeksKolom / 3);
+  let yKotak = Math.floor(indeksBaris / 3);
 
-  let numsInSquare = {};
+  let angkaDalamKotak = {};
 
-  for (let row = ySquare * 3; row < (ySquare + 1) * 3; row++) {
-    for (let col = xSquare * 3; col < (xSquare + 1) * 3; col++) {
-      let currentNum = matrix[row][col].children[0].value;
+  for (let baris = yKotak * 3; baris < (yKotak + 1) * 3; baris++) {
+    for (let kolom = xKotak * 3; kolom < (xKotak + 1) * 3; kolom++) {
+      let angkaSaatIni = matriks[baris][kolom].children[0].value;
 
-      if (currentNum && numsInSquare[currentNum]) {
+      if (angkaSaatIni && angkaDalamKotak[angkaSaatIni]) {
         return false;
-      } else if (currentNum) {
-        numsInSquare[currentNum] = true;
+      } else if (angkaSaatIni) {
+        angkaDalamKotak[angkaSaatIni] = true;
       }
     }
   }
@@ -420,66 +420,66 @@ const isSquareValid = (rowIdx, colIdx, matrix) => {
   return true;
 };
 
-const isCellValid = (row, col, matrix) => {
+const apakahSelValid = (baris, kolom, matriks) => {
   return (
-    isRowValid(grid, row) &&
-    isColValid(grid, col) &&
-    isSquareValid(row, col, matrix)
+    apakahBarisValid(papan, baris) &&
+    apakahKolomValid(papan, kolom) &&
+    apakahKotakValid(baris, kolom, matriks)
   );
 };
 
-// Function to find the next empty cell to fill the value
-const findNextEmpty = (grid, row, col) => {
-  for (let currentRow = 0; currentRow < grid.length; currentRow++) {
-    for (let currentCol = 0; currentCol < grid[row].length; currentCol++) {
+// Fungsi untuk menemukan sel kosong berikutnya untuk mengisi nilai
+const cariSelanjutnyaKosong = (papan, baris, kolom) => {
+  for (let barisSaatIni = 0; barisSaatIni < papan.length; barisSaatIni++) {
+    for (let kolomSaatIni = 0; kolomSaatIni < papan[baris].length; kolomSaatIni++) {
       if (
-        !grid[currentRow][currentCol].classList.contains("fixed") &&
-        !grid[currentRow][currentCol].children[0].value
+        !papan[barisSaatIni][kolomSaatIni].classList.contains("fixed") &&
+        !papan[barisSaatIni][kolomSaatIni].children[0].value
       ) {
-        return [currentRow, currentCol];
+        return [barisSaatIni, kolomSaatIni];
       }
     }
   }
 };
 
-// Function to Animate and Visualize the Algorithm's Solution
+// Fungsi untuk Menganimasikan dan Memvisualisasikan Solusi Algoritma
 
-const animate = (animationList, speedInt) => {
-  for (let event = 0; event < animationList.length; event++) {
+const animasi = (daftarAnimasi, kecepatanInt) => {
+  for (let acara = 0; acara < daftarAnimasi.length; acara++) {
     setTimeout(() => {
-      let [row, col, value, className] = animationList[event];
-      grid[row][col].children[0].value = value;
-      grid[row][col].className = className;
-    }, event * speedInt);
+      let [baris, kolom, nilai, namaKelas] = daftarAnimasi[acara];
+      papan[baris][kolom].children[0].value = nilai;
+      papan[baris][kolom].className = namaKelas;
+    }, acara * kecepatanInt);
   }
-  enableMenu(animationList.length);
+  aktifkanMenu(daftarAnimasi.length);
 };
 
-// Function to enable the menu after the animation is complete
-const enableMenu = (events) => {
+// Fungsi untuk mengaktifkan menu setelah animasi selesai
+const aktifkanMenu = (acara) => {
   setTimeout(() => {
-    inProgress = false;
+    sedangProses = false;
 
     document
       .querySelectorAll(`ul input[type='checkbox']`)
       .forEach((checkbox) => {
         checkbox.disabled = false;
       });
-  }, events * speedInt);
+  }, acara * kecepatanInt);
 };
 
-// Function to create alerts
-const showAlert = (msg, className) => {
-  // Create the alert
-  const alert = document.createElement("div");
-  alert.classList.add("alert");
-  alert.classList.add(className);
-  alert.appendChild(document.createTextNode(msg));
+// Fungsi untuk membuat peringatan
+const tampilkanPeringatan = (pesan, namaKelas) => {
+  // Buat peringatan
+  const peringatan = document.createElement("div");
+  peringatan.classList.add("alert");
+  peringatan.classList.add(namaKelas);
+  peringatan.appendChild(document.createTextNode(pesan));
 
-  //Append the alert to body ( Display on the Screen )
-  document.querySelector("body").appendChild(alert);
+  // Lampirkan peringatan ke badan (Tampilkan di Layar)
+  document.querySelector("body").appendChild(peringatan);
 
   setTimeout(() => {
-    document.querySelector("body").removeChild(alert);
+    document.querySelector("body").removeChild(peringatan);
   }, 5000);
 };
