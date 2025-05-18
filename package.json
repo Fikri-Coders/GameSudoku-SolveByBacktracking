@@ -1,0 +1,22 @@
+{
+  "name": "backtracking-algorithm-visualizer",
+  "version": "1.0.0",
+  "description": "A visualizer for backtracking algorithm using Sudoku as an example",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p dist && cp *.html *.js *.css favicon.ico dist/ && mkdir -p dist/music && cp music/* dist/music/",
+    "start": "npx http-server -o -c-1"
+  },
+  "keywords": [
+    "sudoku",
+    "backtracking",
+    "algorithm",
+    "visualization"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
