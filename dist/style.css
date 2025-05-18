@@ -3,6 +3,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 /* Properties Gaya Body */
 body {
@@ -11,8 +12,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: #2c3e50;
-  background: #f8f9fa;
+  color: #ffffff;
+  background: #121212;
+  font-family: 'Roboto', sans-serif;
 }
 /* Properties Gaya Paragraf */
 p {
@@ -20,6 +22,7 @@ p {
   padding-bottom: 0.5%;
   font-style: oblique;
   font-weight: 600;
+  color: #9e9e9e;
 }
 /* Properties Gaya NavBar */
 nav {
@@ -32,16 +35,20 @@ nav {
   z-index: 32;
   margin-bottom: 2rem;
   opacity: 1;
-  background-color: #3498db;
+  background-color: #212121;
   color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 /* Properties Gaya Logo */
 nav .logo {
-  font-family: "Pacifico", cursive;
+  font-family: 'Roboto', sans-serif;
   font-size: 2rem;
-  font-weight: normal;
+  font-weight: bold;
   text-transform: capitalize;
   z-index: 2;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 /* Properties Gaya List */
 nav > ul {
@@ -60,13 +67,14 @@ nav > ul li {
   font-weight: 600;
   cursor: pointer;
   padding: 0.3rem;
-  transition: all 0.1s linear;
+  transition: all 0.2s ease-in-out;
 }
 /* Efek Hover */
 nav > ul li:hover {
-  border-bottom: 2px solid #ecf0f1;
+  border-bottom: 2px solid #4facfe;
   font-size: 1.05rem;
   font-weight: 1000;
+  color: #4facfe;
 }
 
 /* Styling untuk Menu */
@@ -78,9 +86,11 @@ li > input[type="checkbox"] + label {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  transition: color 0.2s ease-in-out;
 }
 li > input[type="checkbox"] + label:hover {
   border: none;
+  color: #4facfe;
 }
 li > input[type="checkbox"] + label i {
   font-size: 1.1rem;
@@ -97,31 +107,34 @@ li > input[type="checkbox"]:checked ~ ul {
   display: block;
   list-style: none;
   position: absolute;
-  background: #2980b9;
-  box-shadow: 1px 1px 10px rgb(7, 7, 7), -1px -1px 10px #34495e;
+  background: #2d2d2d;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 0.5rem;
   z-index: 400;
   margin: 0.3rem;
+  border: 1px solid #3a3a3a;
 }
 
 li > input[type="checkbox"]:checked ~ ul li {
   width: 10rem;
   height: 3rem;
   line-height: 3;
-  border-bottom: 1px dotted #ecf0f1;
+  border-bottom: 1px solid #3a3a3a;
 }
 
 li > input[type="checkbox"]:checked ~ ul li:hover {
-  border-left: 5px solid #ecf0f1;
+  border-left: 5px solid #4facfe;
   padding-left: 0.6rem;
+  background-color: #333333;
 }
 
 li > input[type="checkbox"]:checked ~ ul li.active {
-  border-left: 5px solid #ecf0f1;
+  border-left: 5px solid #4facfe;
   padding-left: 0.6rem;
   border-bottom-style: solid;
+  background-color: #333333;
 }
 
 /* Properties Gaya Tombol */
@@ -130,12 +143,20 @@ li > input[type="checkbox"]:checked ~ ul li.active {
   font-weight: 600;
   margin-left: 2rem;
   font-size: 1.3rem;
+  background-color: #4facfe;
+  color: #fff;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
 }
 /* Efek Hover untuk Tombol */
 #visualizeBtn:hover {
   font-weight: 600;
   font-size: 1.33rem;
-  text-shadow: 0.5px 0.5px 0.5px #ecf0f1;
+  text-shadow: 0.5px 0.5px 0.5px #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Styling Container untuk menampilkan peringatan */
@@ -147,18 +168,19 @@ li > input[type="checkbox"]:checked ~ ul li.active {
   position: absolute;
   top: 5.5rem;
   left: 0.5rem;
-  border-radius: 3px;
+  border-radius: 8px;
   color: #fff;
   transition: 0.3s all;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .alert.hidden {
   left: -50rem;
 }
 .alert.danger {
-  background: #e74c3c;
+  background: linear-gradient(90deg, #ff4b2b 0%, #ff416c 100%);
 }
 .alert.success {
-  background: #2ecc71;
+  background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
 }
 
 /* Styling untuk Grid Puzzle */
@@ -169,38 +191,44 @@ li > input[type="checkbox"]:checked ~ ul li.active {
   width: 27.5rem;
   border-collapse: collapse;
   table-layout: fixed;
-  border: 5px solid #3498db;
+  border: 5px solid #37474f;
   opacity: 0.95;
   z-index: 30;
   position: relative;
   bottom: 2rem;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .grid-container .row:nth-child(3),
 .grid-container .row:nth-child(6) {
-  border-bottom: 3px solid #3498db;
+  border-bottom: 3px solid #4facfe;
 }
 
 .grid-container .row td {
   text-align: center;
   font-weight: 1000;
-  background: #ecf0f1;
+  background: #2d2d2d;
+  border: 1px solid #3a3a3a;
 }
 
 .grid-container .row td.correct input {
-  background: #2ecc71;
+  background: linear-gradient(145deg, #00c9ff, #92fe9d);
+  color: #1a1a1a;
 }
 .grid-container .row td.wrong input {
-  background: #e74c3c;
+  background: linear-gradient(145deg, #ff4b2b, #ff416c);
+  color: #ffffff;
 }
 .grid-container .row td.fixed input {
-  background: #34495e;
+  background: #424242;
+  color: #ffffff;
 }
 
 .grid-container .row td:nth-child(3),
 .grid-container .row td:nth-child(6) {
-  border-right: 4px solid #3498db;
+  border-right: 4px solid #4facfe;
 }
 
 .row td input {
@@ -212,10 +240,11 @@ li > input[type="checkbox"]:checked ~ ul li.active {
   height: 2.8rem;
   text-align: center;
   font-size: 1.7rem;
-  background: #7f8c8d;
+  background: #424242;
   color: #fff;
-  font-family: "Grandstander", cursive;
+  font-family: 'Roboto', sans-serif;
   outline: none;
+  transition: all 0.2s ease-in-out;
 }
 
 /* Mengubah ukuran beberapa elemen penting untuk mengakomodasi Ukuran Layar yang lebih kecil */
@@ -238,4 +267,18 @@ li > input[type="checkbox"]:checked ~ ul li.active {
     height: 28rem;
     width: 28rem;
   }
+}
+
+/* Tambahan Footer untuk tema FinTrack */
+.footer {
+  background-color: #212121;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid #3a3a3a;
+}
+
+/* Hover efek untuk sel sudoku */
+.row td input:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
 }
