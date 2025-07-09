@@ -13,7 +13,7 @@ Sebuah aplikasi web interaktif yang memvisualisasikan cara kerja algoritma backt
 - [Algoritma Backtracking](#algoritma-backtracking)
 - [Fungsi-Fungsi Utama](#fungsi-fungsi-utama)
 - [Kontribusi](#kontribusi)
-- [Lisensi](#Lisensi)
+- [Lisensi](#-lisensi)
 
 ## 🎯 Gambaran Umum
 
